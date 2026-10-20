@@ -5,11 +5,15 @@ export function ProdutosPage() {
   const [produtos, setProdutos] = useState<any[]>([]);
   const [codigo, setCodigo] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [preco, setPreco] = useState('');
   const [estoque, setEstoque] = useState('');
   const [erro, setErro] = useState('');
   const [sucesso, setSucesso] = useState('');
   const [editandoId, setEditandoId] = useState<number | null>(null);
+  const [filtro, setFiltro] = useState('');
+  const [categoriaFiltro, setCategoriaFiltro] = useState('');
+  const categoriasDisponiveis = ['camisa', 'regata', 'calça', 'short', 'acessorios'];
 
   useEffect(() => {
     carregarProdutos();
@@ -18,6 +22,7 @@ export function ProdutosPage() {
   function limparFormulario() {
     setCodigo('');
     setDescricao('');
+    setCategoria('');
     setPreco('');
     setEstoque('');
     setEditandoId(null);
@@ -35,6 +40,7 @@ export function ProdutosPage() {
   function preencherFormulario(produto: any) {
     setCodigo(produto.codigo || '');
     setDescricao(produto.descricao || '');
+    setCategoria(produto.categoria || 'camisa');
     setPreco(String(produto.preco ?? ''));
     setEstoque(String(produto.estoque ?? ''));
     setEditandoId(Number(produto.id_produtos ?? produto.id));
@@ -50,6 +56,7 @@ export function ProdutosPage() {
       const dadosProduto = {
         codigo,
         descricao,
+        categoria,
         preco: Number(preco),
         estoque: Number(estoque),
       };
@@ -69,6 +76,21 @@ export function ProdutosPage() {
     }
   }
 
+  const produtosFiltrados = produtos.filter((produto: any) => {
+    const termo = filtro.trim().toLowerCase();
+    const categoriaAtual = String(produto.categoria || 'camisa').toLowerCase();
+    const textoProduto = [
+      String(produto.codigo ?? ''),
+      String(produto.descricao ?? ''),
+      String(produto.id_produtos ?? produto.id ?? '')
+    ].join(' ').toLowerCase();
+
+    const atendeTexto = !termo || textoProduto.includes(termo);
+    const atendeCategoria = !categoriaFiltro || categoriaAtual === categoriaFiltro.toLowerCase();
+
+    return atendeTexto && atendeCategoria;
+  });
+
   return (
     <div>
       <h2 style={{ color: '#c7fce0', marginBottom: '20px', textShadow: '0 0 10px rgba(113,255,175,0.35)' }}>📦 Gestão de Produtos - MS² Vestuário</h2>
@@ -80,6 +102,12 @@ export function ProdutosPage() {
         <h3 style={{ fontSize: '16px', color: '#dfffea' }}>{editandoId ? 'Atualizar Produto' : 'Novo Produto / Roupa'}</h3>
         <input placeholder="Código (Ex: CAM001)" value={codigo} onChange={e => setCodigo(e.target.value)} required style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7' }} />
         <input placeholder="Descrição (Ex: Camisa Polo Masculina)" value={descricao} onChange={e => setDescricao(e.target.value)} required style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7' }} />
+        <select value={categoria} onChange={e => setCategoria(e.target.value)} required style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7' }}>
+          <option value="">Selecione a categoria</option>
+          {categoriasDisponiveis.map((item) => (
+            <option key={item} value={item} style={{ background: '#020b09', color: '#f0fff7' }}>{item}</option>
+          ))}
+        </select>
         <input type="number" step="0.01" placeholder="Preço Unitário (R$)" value={preco} onChange={e => setPreco(e.target.value)} required style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7' }} />
         <input type="number" placeholder="Quantidade em Estoque" value={estoque} onChange={e => setEstoque(e.target.value)} required style={{ padding: '8px', borderRadius: '6px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7' }} />
 
@@ -95,9 +123,36 @@ export function ProdutosPage() {
         </div>
       </form>
 
+      <div style={{ maxWidth: '900px', marginBottom: '18px', display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '12px' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#dfffea' }}>Buscar produto</label>
+          <input
+            type="text"
+            value={filtro}
+            onChange={(e) => setFiltro(e.target.value)}
+            placeholder="Digite código, nome ou ID do produto"
+            style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#dfffea' }}>Filtrar por categoria</label>
+          <select
+            value={categoriaFiltro}
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+            style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(138, 255, 196, 0.28)', background: '#020b09', color: '#f0fff7', boxSizing: 'border-box' }}
+          >
+            <option value="">Todas as categorias</option>
+            {categoriasDisponiveis.map((item) => (
+              <option key={item} value={item} style={{ background: '#020b09', color: '#f0fff7' }}>{item}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <h3 style={{ color: '#dfffea', marginBottom: '15px' }}>Catálogo de Produtos</h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', maxWidth: '900px' }}>
-        {produtos.map((p: any) => {
+        {produtosFiltrados.map((p: any) => {
           const idProduto = Number(p.id_produtos ?? p.id);
           return (
             <div key={idProduto} style={{ background: 'rgba(12, 34, 28, 0.9)', border: '1px solid rgba(134,255,194,0.15)', borderRadius: '14px', padding: '16px', boxShadow: '0 0 18px rgba(57, 228, 146, 0.12)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -115,6 +170,10 @@ export function ProdutosPage() {
                 <div style={{ fontWeight: 800, fontSize: '18px', color: '#f0fff7' }}>{p.codigo}</div>
               </div>
 
+              <div style={{ color: '#dfffea', fontSize: '12px', background: 'rgba(64, 129, 97, 0.22)', borderRadius: '999px', padding: '4px 10px', display: 'inline-block', width: 'fit-content' }}>
+                {p.categoria || 'camisa'}
+              </div>
+
               <div style={{ color: '#dfffea' }}>
                 <strong>Descrição:</strong> {p.descricao}
               </div>
@@ -127,9 +186,9 @@ export function ProdutosPage() {
           );
         })}
 
-        {produtos.length === 0 && (
+        {produtosFiltrados.length === 0 && (
           <div style={{ background: 'rgba(12, 34, 28, 0.9)', border: '1px solid rgba(134,255,194,0.15)', borderRadius: '12px', padding: '20px', color: '#dfffea' }}>
-            Nenhum produto cadastrado.
+            {produtos.length === 0 ? 'Nenhum produto cadastrado.' : 'Nenhum produto encontrado com esse filtro.'}
           </div>
         )}
       </div>

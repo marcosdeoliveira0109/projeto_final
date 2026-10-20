@@ -4,6 +4,7 @@ export interface ProdutoData {
   id?: number;
   codigo: string;
   descricao: string;
+  categoria: string;
   preco: number;
   estoque: number;
 }

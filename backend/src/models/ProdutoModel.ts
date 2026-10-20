@@ -1,10 +1,10 @@
 import { pool } from '../config/database';
 
 export class ProdutoModel {
-  static async create(data: { codigo: string; descricao: string; preco: number; estoque: number }) {
+  static async create(data: { codigo: string; descricao: string; preco: number; estoque: number; categoria?: string }) {
     const [result]: any = await pool.execute(
-      'INSERT INTO produtos (codigo, descricao, preco, estoque) VALUES (?, ?, ?, ?)',
-      [data.codigo, data.descricao, data.preco, data.estoque]
+      'INSERT INTO produtos (codigo, descricao, preco, estoque, categoria) VALUES (?, ?, ?, ?, ?)',
+      [data.codigo, data.descricao, data.preco, data.estoque, data.categoria || 'Geral']
     );
     return result.insertId;
   }
@@ -24,7 +24,7 @@ export class ProdutoModel {
     return rows[0] || null;
   }
 
-  static async update(id: number, data: { codigo?: string; descricao?: string; preco?: number; estoque?: number }) {
+  static async update(id: number, data: { codigo?: string; descricao?: string; preco?: number; estoque?: number; categoria?: string }) {
     const campos: string[] = [];
     const valores: any[] = [];
 
@@ -43,6 +43,10 @@ export class ProdutoModel {
     if (data.estoque !== undefined) {
       campos.push('estoque = ?');
       valores.push(data.estoque);
+    }
+    if (data.categoria !== undefined) {
+      campos.push('categoria = ?');
+      valores.push(data.categoria);
     }
 
     if (campos.length === 0) return;
