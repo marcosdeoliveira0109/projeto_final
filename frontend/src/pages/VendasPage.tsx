@@ -68,10 +68,10 @@ export function VendasPage({ usuario }: { usuario: UsuarioLogado }) {
 
   return (
     <div>
-      <h2 style={{ color: '#1e293b', marginBottom: '20px' }}>Histórico de Vendas</h2>
+      <h2 style={{ color: '#c7fce0', marginBottom: '20px', textShadow: '0 0 10px rgba(113,255,175,0.35)' }}>Histórico de Vendas</h2>
 
       {vendas.length === 0 ? (
-        <div style={{ background: '#fff', borderRadius: '12px', padding: '20px', boxShadow: '0 2px 10px rgba(15, 23, 42, 0.06)' }}>
+        <div style={{ background: 'rgba(12, 34, 28, 0.9)', border: '1px solid rgba(134,255,194,0.15)', borderRadius: '12px', padding: '20px', boxShadow: '0 0 18px rgba(57, 228, 146, 0.12)' }}>
           Nenhuma venda registrada ainda.
         </div>
       ) : (
@@ -80,11 +80,12 @@ export function VendasPage({ usuario }: { usuario: UsuarioLogado }) {
             <div
               key={String(venda.id)}
               style={{
-                background: '#fff',
+                background: 'rgba(12, 34, 28, 0.9)',
                 borderRadius: '12px',
                 padding: '18px 20px',
-                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.06)',
-                borderLeft: venda.status === 'cancelada' ? '5px solid #ef4444' : '5px solid #10b981',
+                boxShadow: '0 0 18px rgba(57, 228, 146, 0.12)',
+                border: '1px solid rgba(134,255,194,0.15)',
+                borderLeft: venda.status === 'cancelada' ? '5px solid #ef4444' : '5px solid #3de696',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' }}>

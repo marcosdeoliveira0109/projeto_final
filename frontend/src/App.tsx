@@ -44,36 +44,43 @@ function ProtectedLayout({
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Arial, sans-serif' }}>
-      <nav style={{ width: '230px', backgroundColor: '#0f172a', color: '#fff', padding: '24px 20px', boxSizing: 'border-box' }}>
-        <h2 style={{ fontSize: '20px', marginBottom: '30px', color: '#7dd3fc' }}>MS² Vestuário</h2>
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Arial, sans-serif', background: 'radial-gradient(circle at top, #123e2d 0%, #071b17 35%, #030d0b 100%)', color: '#ecfff7' }}>
+      <nav style={{ width: '230px', background: 'linear-gradient(180deg, rgba(7,26,21,0.96) 0%, rgba(6,18,15,0.98) 100%)', borderRight: '1px solid rgba(109,255,180,0.25)', boxShadow: '0 0 26px rgba(50, 240, 146, 0.12)', color: '#fff', padding: '24px 20px', boxSizing: 'border-box' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '30px', color: '#9ff7c6', textShadow: '0 0 12px rgba(113, 255, 175, 0.7)' }}>MS² Vestuário</h2>
 
-        <div style={{ marginBottom: '24px', padding: '10px 12px', borderRadius: '10px', backgroundColor: '#1e293b' }}>
-          <div style={{ fontSize: '12px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Usuário</div>
-          <div style={{ fontWeight: 700, marginTop: '4px' }}>{usuario.nome}</div>
-          <div style={{ fontSize: '12px', color: '#cbd5e1' }}>{usuario.role}</div>
+        <div style={{ marginBottom: '24px', padding: '10px 12px', borderRadius: '12px', background: 'rgba(17, 62, 47, 0.9)', border: '1px solid rgba(144, 255, 196, 0.25)', boxShadow: '0 0 18px rgba(54, 230, 146, 0.16)' }}>
+          <div style={{ fontSize: '12px', color: '#9fe8c9', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Usuário</div>
+          <div style={{ fontWeight: 700, marginTop: '4px', color: '#f0fff6' }}>{usuario.nome}</div>
+          <div style={{ fontSize: '12px', color: '#d9ffe8', marginTop: '2px' }}>ID: {usuario.id}</div>
+          <div style={{ fontSize: '12px', color: '#d9ffe8', marginTop: '2px' }}>{usuario.role}</div>
         </div>
 
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <li><Link to="/pdv" style={{ color: '#e2e8f0', textDecoration: 'none' }}>🛒 Caixa / PDV</Link></li>
-          <li><Link to="/clientes" style={{ color: '#e2e8f0', textDecoration: 'none' }}>👥 Clientes</Link></li>
-          <li><Link to="/produtos" style={{ color: '#e2e8f0', textDecoration: 'none' }}>📦 Produtos</Link></li>
-          {usuario.role === 'gerente' && (
-            <li><Link to="/vendas" style={{ color: '#e2e8f0', textDecoration: 'none' }}>📜 Vendas</Link></li>
-          )}
-          <li>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <li><Link to="/pdv" style={{ color: '#eafef4', textDecoration: 'none', display: 'block', padding: '8px 10px', borderRadius: '8px', background: 'rgba(18, 56, 44, 0.45)' }}>🛒 Caixa / PDV</Link></li>
+            <li><Link to="/clientes" style={{ color: '#eafef4', textDecoration: 'none', display: 'block', padding: '8px 10px', borderRadius: '8px', background: 'rgba(18, 56, 44, 0.45)' }}>👥 Clientes</Link></li>
+            <li><Link to="/produtos" style={{ color: '#eafef4', textDecoration: 'none', display: 'block', padding: '8px 10px', borderRadius: '8px', background: 'rgba(18, 56, 44, 0.45)' }}>📦 Produtos</Link></li>
+            {usuario.role === 'gerente' && (
+              <li><Link to="/vendas" style={{ color: '#eafef4', textDecoration: 'none', display: 'block', padding: '8px 10px', borderRadius: '8px', background: 'rgba(18, 56, 44, 0.45)' }}>📜 Vendas</Link></li>
+            )}
+          </ul>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '20px', borderTop: '1px solid rgba(109,255,180,0.2)' }}>
+            <Link to="/" style={{ color: '#aafac8', textDecoration: 'none', display: 'block', padding: '10px 12px', borderRadius: '8px', background: 'rgba(18, 56, 44, 0.45)', textAlign: 'center', fontWeight: 700 }}>
+              🔑 Login
+            </Link>
             <button
               type="button"
               onClick={onLogout}
-              style={{ background: 'transparent', border: 'none', color: '#fca5a5', textAlign: 'left', padding: 0, cursor: 'pointer', fontSize: '15px' }}
+              style={{ background: 'rgba(255, 177, 177, 0.08)', border: '1px solid rgba(255, 177, 177, 0.25)', color: '#ffb1b1', padding: '10px 12px', cursor: 'pointer', borderRadius: '8px', fontWeight: 700 }}
             >
-              🔒 Sair / Login
+              🔒 Sair
             </button>
-          </li>
-        </ul>
+          </div>
+        </div>
       </nav>
 
-      <main style={{ flex: 1, backgroundColor: '#f8fafc', padding: '30px' }}>
+      <main style={{ flex: 1, background: 'rgba(9, 20, 17, 0.28)', padding: '30px' }}>
         <Outlet />
       </main>
     </div>

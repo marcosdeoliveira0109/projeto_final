@@ -28,7 +28,11 @@ export class VendaService {
       if (!produto) throw new AppError(`Produto ID ${item.produto_id} não encontrado.`, 404);
 
       if (produto.estoque < item.quantidade) {
-        throw new AppError(`Estoque insuficiente para o produto: ${produto.descricao}. Disponível: ${produto.estoque}`, 400);
+        const faltam = item.quantidade - produto.estoque;
+        throw new AppError(
+          `Estoque insuficiente para o produto: ${produto.descricao}. Faltam ${faltam} unidade(s) para completar esta venda. Estoque disponível: ${produto.estoque}.`,
+          400
+        );
       }
 
       const subtotalItem = Number(produto.preco) * item.quantidade;
